@@ -18,6 +18,12 @@ class TSP:
 			#initially all the starting cost for each node will be zero 
 			self.startCost[i]=0
 
+		#each node ending cost 
+		self.endCost={}
+		for i in range(1,self.numberOfNodes+1):
+			#initially all the ending cost for each node will be zero 
+			self.endCost[i]=0
+
 		#graph which saves the cost between nodes 
 		self.graph={}  
 
@@ -39,6 +45,11 @@ class TSP:
 		#function to add start cost to each node 
 		#node needs to be integer 
 		self.startCost[node]=cost 
+
+	def AddEndCost(self,node,cost):
+		#function to add end cost to each node
+		#nodes need to be integer
+		self.endCost[node]=cost 
 
 	def TspSolutionFinder(self):
 		#function which will calculate the TSP path and cost 
@@ -70,7 +81,7 @@ class TSP:
 		if(visitedNodesBitMask>=((1<<self.numberOfNodes)-1)):
 			#all nodes been visited 
 			if(self.BestValue>costUptoNow):
-				self.BestValue=costUptoNow 
+				self.BestValue=costUptoNow+self.endCost[lastNodeVisited] 
 			return costUptoNow
 
 		if(visitedNodesBitMask in self.costBitMask and lastNodeVisited in self.costBitMask[visitedNodesBitMask]):
@@ -100,7 +111,7 @@ class TSP:
 			return ret 
 
 
-
+"""
 obj=TSP(4)
 obj.AddEdge(1,2,10)
 obj.AddEdge(2,1,10)
@@ -119,5 +130,24 @@ obj.AddStartCost(1,0)
 obj.AddStartCost(2,0)
 obj.AddStartCost(3,0)
 obj.AddStartCost(4,0)
+
+obj.AddEndCost(1,0)
+obj.AddEndCost(2,0)
+obj.AddEndCost(3,0)
+obj.AddEndCost(4,0)
+"""
+
+obj=TSP(4)
+obj.AddEdge(1,2,10)
+obj.AddEdge(2,1,10)
+obj.AddEdge(1,3,1)
+obj.AddEdge(3,1,1)
+obj.AddEdge(2,3,2)
+obj.AddEdge(3,2,2)
+obj.AddEdge(2,4,3)
+obj.AddEdge(4,2,3)
+obj.AddEdge(3,4,30)
+obj.AddEdge(4,3,30)
+
 
 obj.TspSolutionFinder()
